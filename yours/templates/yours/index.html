@@ -1,0 +1,23 @@
+{% extends "yours_base/base_with_navbar.html" %}
+
+{% load static %}
+
+{% block content %}
+<div class="post-list index">
+  <div class="header">
+    <h2>Second-Hand Products</h2>
+    <a class="link" href="{% url 'post-create' %}">
+      <img class="pen-icon" src="{% static 'yours/icons/ic-pen.svg' %}" alt="pen icon">
+      <span>Write</span>
+    </a>
+  </div>
+  <form class="search-form" action="{% url 'search' %}" method="get">
+    <input class="search-input" name="query" type="text" placeholder="What are you looking for?" required>
+    <button class="yours-button darkpurple" type="submit">Go</button>
+  </form>
+  {% include 'components/post_list.html' with posts=posts empty_message="No Posts Yet :(" %}
+  {% if is_paginated %}
+    {% include 'components/pagination.html' with page_obj=page_obj %}
+  {% endif %}
+</div>
+{% endblock content %}

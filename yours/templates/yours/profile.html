@@ -1,0 +1,58 @@
+{% extends "yours_base/base_with_navbar.html" %}
+
+{% load static %}
+
+{% block title %}{{ profile_user.nickname }} | Yours{% endblock title %}
+
+{% block content %}
+<div class="yours-card profile-header">
+  <div class="profile-pic" style="background-image: url('{{ profile_user.profile_pic.url }}')"></div>
+  <div class="info">
+    <div class="header-row">
+      <span class="nickname">{{ profile_user.nickname }}</span>
+      {% if user.is_authenticated and user != profile_user %}
+        <form action="{% url 'process-follow' profile_user.id %}" method="post">
+          {% csrf_token %}
+          {% if is_following %}
+            <button class="follow-button secondary" type="submit">
+              UnFollow
+            </button>
+          {% else %}
+            <button class="follow-button" type="submit">
+              Follow
+            </button>
+          {% endif %}
+        </form>
+      {% endif %}
+    </div>
+    <ul class="yours-links">
+      <li>{{ profile_user.whatsapp_id }}</li>
+      <li class="divider"></li>
+      <li>{{ profile_user.address }}</li>
+    </ul>
+  </div>
+  {% if user == profile_user %}
+    <div class="buttons">
+      <a class="yours-button small secondary" href="{% url 'profile-update' %}">
+        Edit Profile
+      </a>
+      <a class="yours-button small secondary" href="{% url 'account_change_password' %}">
+        Change Password
+      </a>
+    </div>
+  {% endif %}
+</div>
+
+<div class="post-list">
+  <div class="header">
+    <h2>Latest Posts of {{ profile_user.nickname }}</h2>
+    {% if user_posts %}
+      <a class="link" href="{% url 'user-post-list' profile_user.id %}">
+        <span>See All Posts</span>
+        <img class="triangle-icon" src="{% static 'yours/icons/ic-triangle.svg' %}" alt="triangle icon">
+      </a>
+    {% endif %}
+  </div>
+  {% include 'components/post_list.html' with posts=user_posts empty_message="No Posts Yet :(" %}
+</div>
+{% endblock content %}

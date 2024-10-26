@@ -1,0 +1,11 @@
+Hello {{ user.email }},
+
+Thank you for using Yours.com!
+
+To ensure the proper use of our service, email verification is required. Please verify your email by clicking the link below:
+
+{{ activate_url }}
+
+Thank you.
+
+Yours.com

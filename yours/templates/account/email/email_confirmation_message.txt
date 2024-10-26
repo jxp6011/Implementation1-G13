@@ -1,0 +1,9 @@
+Hello {{ user.email }},
+
+Please finish the e-mail verification through the link below.
+
+{{ activate_url }}
+
+Thank you.
+
+Yours.com

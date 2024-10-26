@@ -1,0 +1,140 @@
+{% extends "yours_base/base_with_navbar.html" %}
+
+{% load static %}
+{% load humanize %}
+{% load widget_tweaks %}
+
+{% block title %}{{ post.title }} | Yours{% endblock title %}
+
+{% block content %}
+<div class="post-detail">
+  <div class="header">
+    <a href="{% url 'index' %}">&lt; To The Lists</a>
+    {% if post.author == user %}
+    <div class="buttons">
+      <a class="yours-button small negative" href="{% url 'post-delete' post.id %}">Delete</a>
+      <a class="yours-button small secondary" href="{% url 'post-update' post.id %}">Edit</a>
+    </div>
+    {% endif %}
+  </div>
+  <article>
+    <img class="image" src="{{ post.image1.url }}">
+    {% if post.image2 %}
+      <img class="image" src="{{ post.image2.url }}">
+    {% endif %}
+    {% if post.image3 %}
+      <img class="image" src="{{ post.image3.url }}">
+    {% endif %}
+    <div class="post-meta">
+      <h2 class="title">{{ post.title }}</h2>
+      <div class="item-info">
+        <div class="item-price {% if post.is_sold %}sold{% endif %}">{{ post.item_price|intcomma }}USD</div>
+        <div class="yours-chip primary">Condition {{ post.item_condition }}</div>
+        <span class="date">{{ post.dt_created|date:"Y.m.d" }}</span>
+      </div>
+      {% if post.is_sold %}<div class="is-sold">Sold Out</div>{% endif %}
+    </div>
+
+    <a class="profile-link" href="{% url 'profile' post.author.id %}">
+      <div class="yours-box gray-background profile">
+        <div class="profile-pic" style="background-image: url('{{ post.author.profile_pic.url }}')"></div>
+        <div class="profile-info">
+          <div class="nickname">{{ post.author.nickname }}</div>
+          <ul class="yours-links">
+            <li>{{ post.author.whatsapp_id }}</li>
+            <li class="divider"></li>
+            <li>{{ post.author.address }}</li>
+          </ul>
+        </div>
+      </div>
+    </a>
+
+    <p class="item-detail">
+      {{ post.item_details|linebreaksbr }}
+    </p>
+  </article>
+
+  <div class="like-comment-header">
+    {% if user.is_authenticated %}
+      <form action="{% url 'process-like' post_ctype_id post.id %}" method="post">
+        {% csrf_token %}
+        <button class="like-button" type="submit">
+          {% if likes_post %}
+            <img src="{% static 'yours/icons/ic-heart-purple.svg' %}" alt="filled like icon">
+          {% else %}
+            <img src="{% static 'yours/icons/ic-heart.svg' %}" alt="like icon">
+          {% endif %}
+          <span> {{ post.likes.count }}</span>
+        </button>
+      </form>
+    {% else %}
+      <a class="like-button" href="{% url 'account_login' %}?next={% url 'post-detail' post.id %}">
+        <img src="{% static 'yours/icons/ic-heart.svg' %}" alt="like icon">
+        <span> {{ post.likes.count }}</span>
+      </a>
+    {% endif %}
+    <div class="comment-info">
+      <img src="{% static 'yours/icons/ic-comment.svg' %}" alt="comment icon"> 
+      <span> {{ post.comments.count }}</span>
+    </div>
+  </div>
+  <form class="comment-create-form" action="{% url 'comment-create' post.id %}" method="post">
+    {% csrf_token %}
+    {% if user.is_authenticated %}
+      {{ form.content|attr:"placeholder:Please Enter Comment."|add_class:"yours-input" }}      
+      <button class="yours-button" type="submit">Add</button>
+    {% else %}
+      <a href="{% url 'account_login' %}?next={% url 'post-detail' post.id %}">
+        {{ form.content|attr:"placeholder:Please log in for adding comment."|add_class:"yours-input"|attr:"disabled" }}      
+      </a>
+      <button class="yours-button secondary" type="submit" disabled>Submit</button>
+    {% endif %}
+  </form>
+  {% for comment in post.comments.all %}
+    <div class="comment">
+      <div class="comment-header">
+        <a href="{% url 'profile' comment.author.id %}">
+          <div class="comment-author">
+            <div class="profile-pic" style="background-image: url('{{ comment.author.profile_pic.url }}')"></div>
+            <span>{{ comment.author.nickname }}</span>
+          </div>
+        </a>
+        <div class="date">
+          {{ comment.dt_created|date:"Y.m.d" }}
+        </div>
+      </div>
+      <div class="comment-content">
+        {{ comment.content|linebreaksbr }}
+      </div>
+      <div class="comment-footer">
+        {% if user.is_authenticated %}
+          <form action="{% url 'process-like' comment_ctype_id comment.id %}" method="post">
+            {% csrf_token %}
+            <button class="like-button" type="submit">
+              {% if comment in liked_comments %}
+                <img width="15px" src="{% static 'yours/icons/ic-heart-purple.svg' %}" alt="filled like icon">
+              {% else %}
+                <img width="15px" src="{% static 'yours/icons/ic-heart.svg' %}" alt="like icon">
+              {% endif %} 
+              <span> {{ comment.likes.count }}</span>
+            </button>
+          </form>
+        {% else %}
+          <a class="like-button" href="{% url 'account_login' %}?next={% url 'post-detail' post.id %}">
+            <img width="15px" src="{% static 'yours/icons/ic-heart.svg' %}" alt="like icon">
+            <span> {{ comment.likes.count }}</span>
+          </a>
+        {% endif %}
+        {% if user == comment.author %}
+          <div class="buttons">
+            <a href="{% url 'comment-delete' comment.id %}">Delete</a>
+            <span> | </span>
+            <a href="{% url 'comment-update' comment.id %}">Edit</a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
+  
+</div>
+{% endblock content %}

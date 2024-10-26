@@ -1,0 +1,60 @@
+{% extends "yours_base/base.html" %}
+
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}Sign Up | Yours{% endblock title %}
+
+{% block body_class %}with-border with-background{% endblock %}
+
+{% block content %}
+<div class="signup">
+  <form method="post">
+    <a href="{% url 'index' %}">
+      <img class="logo" src="{% static 'yours/assets/logo.svg' %}" alt="Yours">
+    </a>
+    {% csrf_token %}
+    <div class="email">
+      {{ form.email|add_class:"yours-input"|attr:"placeholder:E-mail"|add_error_class:"error" }}
+      {% for error in form.email.errors %}
+        <div class="error-message">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div class="password1">
+      {{ form.password1|add_class:"yours-input"|attr:"placeholder:Password"|add_error_class:"error" }}
+      {% for error in form.password1.errors %}
+        <div class="error-message">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div class="password2">
+      {{ form.password2|add_class:"yours-input"|attr:"placeholder:Password Check"|add_error_class:"error" }}
+      {% for error in form.password2.errors %}
+        <div class="error-message">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div class="nickname">
+      {{ form.nickname|add_class:"yours-input"|attr:"placeholder:Nickname"|add_error_class:"error" }}
+      {% for error in form.nickname.errors %}
+        <div class="error-message">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div class="whatsapp_id">
+      {{ form.whatsapp_id|add_class:"yours-input"|attr:"placeholder:Whatsapp ID"|add_error_class:"error" }}
+      {% for error in form.whatsapp_id.errors %}
+        <div class="error-message">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div class="address">
+      {{ form.address|add_class:"yours-input"|attr:"placeholder:Address (ex: 201 Old Main University Park PA)"|add_error_class:"error" }}
+      {% for error in form.address.errors %}
+        <div class="error-message">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <button class="yours-button large primary submit" type="submit">Sign-Up</button>
+  </form>
+
+  <div class="footer">
+    Already have an account? <a class="yours-link" href="{% url 'account_login' %}">Log-In</a>
+  </div>
+</div>
+{% endblock content %}

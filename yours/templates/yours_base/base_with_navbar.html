@@ -1,0 +1,44 @@
+{% extends "yours_base/base.html" %}
+
+{% load static %}
+
+{% block body_class %}with-border{% endblock %}
+
+{% block header %}
+<header class="site-header">
+  <a class="logo" href="{% url 'index' %}">
+    <img src="{% static 'yours/assets/logo.svg' %}" alt="Yours">
+  </a>
+  <nav>
+    <ul class="menu">
+      {% if user.is_authenticated %}
+        <li class="menu-item user-menu"><a href="{% url 'profile' user.id %}">My Profile</a></li>
+        <li class="menu-item user-menu"><a href="{% url 'account_logout' %}">Log-Out</a></li>
+        <ul class="extra-menu">
+          <li class="extra-menu-item">
+            <a href="{% url 'wishlist' %}">
+              <img src="{% static 'yours/icons/ic-wishlist.svg' %}" alt="Liked Posts">
+            </a>
+          </li>
+          <li class="extra-menu-item">
+            <a href="{% url 'following-post-list' %}">
+              <img src="{% static 'yours/icons/ic-all.svg' %}" alt="Following Posts">
+            </a>
+          </li>
+        </ul>
+      {% else %}
+        <li class="menu-item guest-menu"><a class="yours-chip" href="{% url 'account_login' %}">Log-In</a></li>
+        <li class="menu-item guest-menu"><a class="yours-chip" href="{% url 'account_signup' %}">Sign Up</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+</header>
+{% endblock header %}
+
+{% block footer %}
+<footer class="site-footer">
+  <div class="content">
+    <span>YOURS</span>
+  </div>
+</footer>
+{% endblock footer %}

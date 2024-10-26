@@ -1,0 +1,16 @@
+{% extends "yours_base/base_with_navbar.html" %}
+
+{% load widget_tweaks %}
+
+{% block title %}Edit Comment | Yours{% endblock title %}
+
+{% block content %}
+<form class="comment-update-form" method="post">
+  {% csrf_token %}
+  {{ form.content|attr:"placeholder:Please Enter Comment."|add_class:"yours-input" }}
+  <div class="buttons">
+    <button class="yours-button darkpurple" type="submit">Done</button>
+    <a class="yours-button darkgray" href="{% url 'post-detail' comment.post.id %}">Cancel</a>
+  </div>
+</form>
+{% endblock content %}

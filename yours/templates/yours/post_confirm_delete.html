@@ -1,0 +1,14 @@
+{% extends "yours_base/base_with_header.html" %}
+
+{% block title %}{{ post.title }} | Yours{% endblock title %}
+
+{% block content %}
+<form class="yours-noti post-confirm" method="post">
+  {% csrf_token %}
+  <span>Are you sure you want to delete this post?</span>
+  <div class="buttons">
+    <button class="yours-button darkpurple" type="submit">Delete</button>
+    <a class="yours-button darkgray" href="{% url 'post-detail' post.id %}">Cancel</a>
+  </div>
+</form>
+{% endblock content %}

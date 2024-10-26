@@ -1,0 +1,11 @@
+{% extends "yours_base/base.html" %}
+
+{% load static %}
+
+{% block header %}
+<div class="site-simple-header">
+  <a href="{% url 'index' %}">
+    <img class="logo" src="{% static 'yours/assets/logo.svg' %}" alt="Yours">
+  </a>
+</div>
+{% endblock header %}

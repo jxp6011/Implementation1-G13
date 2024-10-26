@@ -1,0 +1,8 @@
+{% extends "yours_base/base_with_header.html" %}
+
+{% block content %}
+<div class="yours-noti purple email-confirm-noti">
+  <p>E-mail verification is required for adding product. Check sent e-mail to the {{ user.email }}, and Finish the e-mail verification please.</p>
+  <a class="yours-button darkpurple link" href="{% url 'index' %}">Move to the Home</a>
+</div>
+{% endblock content %}

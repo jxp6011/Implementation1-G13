@@ -1,0 +1,40 @@
+{% extends "yours_base/base_with_header.html" %}
+{% load widget_tweaks %}
+
+{% block title %}Edit Profile | Yours{% endblock title %}
+
+{% block content %}
+<div class="profile-form">
+  <form class="form" method="post" autocomplete="off" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="profile-pic">
+      <div class="thumb" style="background-image: url('{{ user.profile_pic.url }}')"></div>
+      <div class="file">
+        {{ form.profile_pic }}
+      </div>
+    </div>
+    <div class="nickname">
+      {{ form.nickname|add_class:"yours-input"|add_error_class:"error"|attr:"placeholder:Nickname" }}
+      {% for error in form.nickname.errors %}
+        <div class="error-message">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div class="whatsapp-id">
+      {{ form.whatsapp_id|add_class:"yours-input"|add_error_class:"error"|attr:"placeholder:Whatsapp ID" }}
+      {% for error in form.whatsapp_id.errors %}
+        <div class="error-message">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div class="address">
+      {{ form.address|add_class:"yours-input"|add_error_class:"error"|attr:"placeholder:Address" }}
+      {% for error in form.address.errors %}
+        <div class="error-message">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div class="buttons">
+      <a class="yours-button large secondary cancel" href="{% url 'profile' user.id %}">Cancel</a>
+      <button class="yours-button large primary submit" type="submit">Done</button>
+    </div>
+  </form>
+</div>
+{% endblock content %}

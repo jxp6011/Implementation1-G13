@@ -1,0 +1,40 @@
+{% extends "yours_base/base.html" %}
+{% load widget_tweaks %}
+
+{% block title %}Welcome To Yours.com! | Yours{% endblock title %}
+
+{% block body_class %}with-border with-background{% endblock %}
+
+{% block content %}
+<div class="profile-form">
+  <h1 class="heading">Welcome!<br>Please Write<strong> Profile</strong></h1>
+  <form class="form" method="post" autocomplete="off" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="profile-pic">
+      <div class="thumb" style="background-image: url('{{ user.profile_pic.url }}')"></div>
+      <div class="file">
+        {{ form.profile_pic }}
+      </div>
+    </div>
+    <div class="nickname">
+      {{ form.nickname|add_class:"yours-input"|add_error_class:"error"|attr:"placeholder:Nickname" }}
+      {% for error in form.nickname.errors %}
+        <div class="error-message">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div class="whatsapp-id">
+      {{ form.whatsapp_id|add_class:"yours-input"|add_error_class:"error"|attr:"placeholder:Whatsapp ID" }}
+      {% for error in form.whatsapp_id.errors %}
+        <div class="error-message">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div class="address">
+      {{ form.address|add_class:"yours-input"|add_error_class:"error"|attr:"placeholder:Address (ex: 201 Old Main University Park PA)" }}
+      {% for error in form.address.errors %}
+        <div class="error-message">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <button class="yours-button large primary submit-only" type="submit">Done</button>
+  </form>
+</div>
+{% endblock content %}
